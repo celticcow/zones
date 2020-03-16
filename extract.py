@@ -17,7 +17,26 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 gregory.dunlap / celtic_cow
 
 """
+def get_group_contents(grp):
+    show_group_json = {"name" : grp}
 
+    check_group = apifunctions.api_call(ip_addr, "show-group", show_group_json, sid)
+
+    print(json.dumps(check_group))
+
+    grp_size = len(check_group['members'])
+
+    print(grp_size)
+
+    for x in range(grp_size):
+        print(check_group['members'][x]['name'])
+        if(check_group['members'][x]['type'] == "host"):
+            print(check_group['members'][x]['ipv4-address'])
+        if(check_group['members'][x]['type'] == "network"):
+            print(check_group['members'][x]['subnet4'])
+            print(check_group['members'][x]['mask-length4'])
+
+# end of get_group_contents
 
 if __name__ == "__main__":
     
@@ -35,6 +54,17 @@ if __name__ == "__main__":
     if(debug == 1):
         print("session id : " + sid)
 
+
+    with open('grp.csv') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',', quotechar='|')
+        for row in reader:
+            grp = row[0]
+            print("*********")
+            print(grp)
+            get_group_contents(grp)
+            print("---------")
+
+    """
     grp_2_extract = "NPIT150-VRF105"
 
     show_group_json = {"name" : grp_2_extract}
@@ -54,7 +84,7 @@ if __name__ == "__main__":
         if(check_group['members'][x]['type'] == "network"):
             print(check_group['members'][x]['subnet4'])
             print(check_group['members'][x]['mask-length4'])
-
+    """
 
     # don't need to publish
     time.sleep(20)
