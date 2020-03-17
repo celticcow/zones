@@ -22,19 +22,18 @@ def get_group_contents(grp):
 
     check_group = apifunctions.api_call(ip_addr, "show-group", show_group_json, sid)
 
-    print(json.dumps(check_group))
+    #print(json.dumps(check_group))
 
-    grp_size = len(check_group['members'])
+    grp_size = len(check_group['members'])  # oh wow this worked.
 
-    print(grp_size)
+    #print(grp_size)
 
     for x in range(grp_size):
-        print(check_group['members'][x]['name'])
+        #print(check_group['members'][x]['name'])
         if(check_group['members'][x]['type'] == "host"):
-            print(check_group['members'][x]['ipv4-address'])
+            print(check_group['members'][x]['ipv4-address'] + "/32")
         if(check_group['members'][x]['type'] == "network"):
-            print(check_group['members'][x]['subnet4'])
-            print(check_group['members'][x]['mask-length4'])
+            print(check_group['members'][x]['subnet4'] + "/" + str(check_group['members'][x]['mask-length4']))
 
 # end of get_group_contents
 
