@@ -30,7 +30,7 @@ class Zone(object):
 
         for n in self.network:
             if(n.is_match(IP) == 1):
-                print(n.print_Network())
+                #print(n.print_Network())
                 return(1)
         return(0)
     
