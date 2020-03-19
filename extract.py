@@ -17,7 +17,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 gregory.dunlap / celtic_cow
 
 """
-def get_group_contents(grp):
+def get_group_contents(grp,ip_addr,sid):
     show_group_json = {"name" : grp}
 
     check_group = apifunctions.api_call(ip_addr, "show-group", show_group_json, sid)
@@ -32,14 +32,66 @@ def get_group_contents(grp):
         #print(check_group['members'][x]['name'])
         if(check_group['members'][x]['type'] == "host"):
             print(check_group['members'][x]['ipv4-address'] + "/32")
-        if(check_group['members'][x]['type'] == "network"):
+        elif(check_group['members'][x]['type'] == "network"):
             print(check_group['members'][x]['subnet4'] + "/" + str(check_group['members'][x]['mask-length4']))
+        elif(check_group['members'][x]['type'] == "group"):
+            get_group_contents(check_group['members'][x]['name'],ip_addr,sid)
+        elif(check_group['members'][x]['type'] == "address-range"):
+            #print(json.dumps(check_group['members'][x]))
+            startip = check_group['members'][x]['ipv4-address-first']
+            endip   = check_group['members'][x]['ipv4-address-last']
+
+            sparts = startip.split('.')
+            eparts = endip.split('.')
+
+            if((sparts[0] == eparts[0]) and (sparts[1] == eparts[1]) and (sparts[2] == eparts[2])):
+                #we have a < /24 thing
+                for i in range(int(sparts[3]), int(eparts[3])+1):
+                    print(sparts[0] + "." + sparts[1] + "." + sparts[2] + "." + str(i) + "/32")
+            if((sparts[0] == eparts[0]) and (sparts[1] == eparts[1]) and (sparts[2] != eparts[2])):
+                #we have a > 24 but < 16
+                start3 = int(sparts[2])
+                end3   = int(eparts[2])
+                start4 = int(sparts[3])
+                end4   = int(eparts[3])
+
+                for i in range(int(sparts[2]), int(eparts[2])+1):
+                    if(i == start3):
+                        #we're in the first 3rd octet we need to start and start4 and go through 255
+                        for j in range(start4,256):
+                            print(sparts[0] + "." + sparts[1] + "." + str(i) + "." + str(j) + "/32")
+                    elif((i != start3) and (i != end3)):
+                        #in the middle
+                        for j in range(0,256):
+                            print(sparts[0] + "." + sparts[1] + "." + str(i) + "." + str(j)+ "/32")
+                    elif((i != start3) and (i == end3)):
+                        #at the end
+                        for j in range(0,end4+1):
+                            print(sparts[0] + "." + sparts[1] + "." + str(i) + "." + str(j)+ "/32")
+                    else:
+                        print("hit else")
+            if((sparts[0] == eparts[0]) and (sparts[1] != eparts[1])):
+                #we have a > 16 but < 8
+                print("oh dang")
+                start2 = int(sparts[1])
+                end2   = int(eparts[1])
+                start3 = int(sparts[2])
+                end3   = int(eparts[2])
+                start4 = int(sparts[3])
+                end4   = int(eparts[3])
+
+                for i in range(start2,end2+1):
+                    print(sparts[0] + "." + str(i))
+            
+        else:
+            print(check_group['members'][x]['name'])
+            print(check_group['members'][x]['type'])
 
 # end of get_group_contents
 
 if __name__ == "__main__":
     
-    debug = 0
+    debug = 1
 
     if(debug == 1):
         print("extract zones  : version 0.1")
@@ -61,7 +113,7 @@ if __name__ == "__main__":
             grp = row[0]
             #print("*********")
             print(grp)
-            get_group_contents(grp)
+            get_group_contents(grp,ip_addr,sid)
             print("****")
 
   
