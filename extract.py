@@ -62,8 +62,9 @@ def get_group_contents(grp,ip_addr,sid):
                             print(sparts[0] + "." + sparts[1] + "." + str(i) + "." + str(j) + "/32")
                     elif((i != start3) and (i != end3)):
                         #in the middle
-                        for j in range(0,256):
-                            print(sparts[0] + "." + sparts[1] + "." + str(i) + "." + str(j)+ "/32")
+                        print(sparts[0] + "." + sparts[1] + "." + str(i) + ".0/24")
+                        #for j in range(0,256):
+                        #    print(sparts[0] + "." + sparts[1] + "." + str(i) + "." + str(j)+ "/32")
                     elif((i != start3) and (i == end3)):
                         #at the end
                         for j in range(0,end4+1):
@@ -72,7 +73,7 @@ def get_group_contents(grp,ip_addr,sid):
                         print("hit else")
             if((sparts[0] == eparts[0]) and (sparts[1] != eparts[1])):
                 #we have a > 16 but < 8
-                print("oh dang")
+                # if some one does this ... find them and distroy them
                 start2 = int(sparts[1])
                 end2   = int(eparts[1])
                 start3 = int(sparts[2])
@@ -80,10 +81,33 @@ def get_group_contents(grp,ip_addr,sid):
                 start4 = int(sparts[3])
                 end4   = int(eparts[3])
 
-                for i in range(start2,end2+1):
-                    print(sparts[0] + "." + str(i))
-            
+                for k in range(start2,end2+1):
+                    if(k == start2):
+                        #first 2nd octet 
+                        for j in range(start3,256):
+                            #print(sparts[0] + "." + str(k) + "." + str(j) + ".")
+                            if(j == start3):
+                                #beginning
+                                for q in range(start4,256):
+                                    print(sparts[0] + "." + str(k) + "." + str(j) + "." + str(q) + "/32")
+                            else:
+                                #do a /24 we're not at end
+                                print(sparts[0] + "." + str(k) + "." + str(j) + ".0/24")
+                    elif((k != start2) and (k != end2)):
+                        #middle 2nd octet 
+                        #possible for /16 here  ****
+                        print(sparts[0] + "." + str(k) + ".0.0/16")
+                    elif((k != start2) and (k == end2)):
+                        #at the end of the road
+                        for j in range(0,end3+1):
+                            if((j != start3) and (j != end3)):
+                                print(sparts[0] + "." + str(k) + "." + str(j) + ".0/24")
+                            else:
+                                for q in range(0,end4+1):
+                                    print(sparts[0] + "." + str(k) + "." + str(j) + "." + str(q) + "/32")
+        #end of elif(check_group['members'][x]['type'] == "address-range"):  
         else:
+            #unknown type of group content
             print(check_group['members'][x]['name'])
             print(check_group['members'][x]['type'])
 
@@ -106,7 +130,6 @@ if __name__ == "__main__":
     if(debug == 1):
         print("session id : " + sid)
 
-
     with open('grp.csv') as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='|')
         for row in reader:
@@ -115,7 +138,6 @@ if __name__ == "__main__":
             print(grp)
             get_group_contents(grp,ip_addr,sid)
             print("****")
-
   
     # don't need to publish
     time.sleep(20)
