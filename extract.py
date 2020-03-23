@@ -122,7 +122,7 @@ if __name__ == "__main__":
 
     ip_addr  = "146.18.96.16"
     ip_cma   = "146.18.96.25"
-    user     = "gdunlap"
+    user     = "roapi"
     password = "1qazxsw2"
 
     sid = apifunctions.login(user,password, ip_addr, ip_cma)

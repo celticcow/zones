@@ -40,8 +40,9 @@ if __name__ == "__main__":
         #end of for row
     #end of csv file
 
+    ipx = input("enter IP to search for : ")
 
-    ipx = "10.81.237.99"
+    #ipx = "10.229.62.5"
 
     for z in list_of_zones:
         if(z.compare(ipx)):
