@@ -33,7 +33,10 @@ def get_group_contents(grp,ip_addr,sid):
         if(check_group['members'][x]['type'] == "host"):
             print(check_group['members'][x]['ipv4-address'] + "/32")
         elif(check_group['members'][x]['type'] == "network"):
-            print(check_group['members'][x]['subnet4'] + "/" + str(check_group['members'][x]['mask-length4']))
+            try:
+                print(check_group['members'][x]['subnet4'] + "/" + str(check_group['members'][x]['mask-length4']))
+            except:
+                print(check_group['members'][x]['subnet6'] + "/" + str(check_group['members'][x]['mask-length6']))
         elif(check_group['members'][x]['type'] == "group"):
             get_group_contents(check_group['members'][x]['name'],ip_addr,sid)
         elif(check_group['members'][x]['type'] == "address-range"):
@@ -115,7 +118,7 @@ def get_group_contents(grp,ip_addr,sid):
 
 if __name__ == "__main__":
     
-    debug = 1
+    debug = 0
 
     if(debug == 1):
         print("extract zones  : version 0.1")
