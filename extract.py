@@ -5,7 +5,7 @@ import json
 import sys
 import csv
 import time
-import getpass
+import argparse
 import ipaddress
 import apifunctions
 
@@ -120,8 +120,15 @@ if __name__ == "__main__":
     if(debug == 1):
         print("extract zones  : version 0.1")
 
-    ip_addr  = "146.18.96.16"
-    ip_cma   = "146.18.96.25"
+    parser = argparse.ArgumentParser(description='Zone Extractor')
+    parser.add_argument("-m", required=True, help="MDS IP")
+    parser.add_argument("-c", required=True, help="CMA IP")
+    parser.add_argument("-f", required=True, help="input csv")
+
+    args=parser.parse_args()
+
+    ip_addr  = args.m
+    ip_cma   = args.c
     user     = "roapi"
     password = "1qazxsw2"
 
@@ -130,7 +137,7 @@ if __name__ == "__main__":
     if(debug == 1):
         print("session id : " + sid)
 
-    with open('grp.csv') as csvfile:
+    with open(args.f) as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='|')
         for row in reader:
             grp  = row[0]

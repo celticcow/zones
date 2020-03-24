@@ -55,6 +55,7 @@ if __name__ == "__main__":
             print("Match in zone")
             print(z.get_name())
             print(z.get_meta())
+            print("**********")
     
     print("--------end of program-------")
 
