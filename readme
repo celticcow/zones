@@ -4,6 +4,7 @@ take a file of cma / group names and pulld info out
 use this to build a list of zones which contain networks
 
 todo:
+** Meta data on input ** csv
 input file complete
 zone build out
 zone out

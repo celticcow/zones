@@ -133,9 +133,15 @@ if __name__ == "__main__":
     with open('grp.csv') as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='|')
         for row in reader:
-            grp = row[0]
+            grp  = row[0]
+            try:
+                meta = row[1]
+            except:
+                #no one put meta data in ... need this to avoid error condition
+                meta = "n/a"
             #print("*********")
             print(grp)
+            print("Meta:" + meta)
             get_group_contents(grp,ip_addr,sid)
             print("****")
   

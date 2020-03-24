@@ -5,22 +5,29 @@ from network import Network
 
 class Zone(object):
     """
-    a collection of networks / hosts taht make of a network boundry point
+    a collection of networks / hosts that make of a network boundry point
     """
 
     #constructor
     def __init__(self, name="default"):
         self.name = name
+        self.meta = "n/a"
         self.network = list()
     
     #accessor
     def get_name(self):
         return(self.name)
     
+    def get_meta(self):
+        return(self.meta)
+
     #modifiers
     def set_name(self,name):
         self.name = name
     
+    def set_meta(self,meta):
+        self.meta = meta
+
     def add_network(self, net1):
         self.network.append(net1)
     
@@ -37,7 +44,8 @@ class Zone(object):
     #output
     def printZone(self):
         print (self.name)
-
+        print (self.meta)
+        
         for x in self.network:
             x.print_Network()
 # end of class

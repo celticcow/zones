@@ -7,6 +7,10 @@ from zone import Zone
 from network import Network
 
 """
+Greg Dunlap / celtic_cow
+
+build zone list and search it
+* this should serve more as a poc code for later building web front end and cgi this
 """
 
 if __name__ == "__main__":
@@ -30,6 +34,8 @@ if __name__ == "__main__":
                 ztemp = Zone(data)
                 list_of_zones.append(ztemp)
                 startZ = 0
+            elif("Meta" in data):
+                list_of_zones[csvindex].set_meta(data)
             elif(data == "****"):
                 #end of zone section
                 startZ = 1
@@ -48,6 +54,7 @@ if __name__ == "__main__":
         if(z.compare(ipx)):
             print("Match in zone")
             print(z.get_name())
+            print(z.get_meta())
     
     print("--------end of program-------")
 
