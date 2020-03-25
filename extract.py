@@ -20,6 +20,10 @@ gregory.dunlap / celtic_cow
 def get_group_contents(grp,ip_addr,sid):
     show_group_json = {"name" : grp}
 
+    if(apifunctions.group_exist(ip_addr,grp,sid) == False):
+        #function does not exist so we should bail
+        return
+
     check_group = apifunctions.api_call(ip_addr, "show-group", show_group_json, sid)
 
     #print(json.dumps(check_group))
