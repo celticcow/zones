@@ -36,6 +36,8 @@ if __name__ == "__main__":
                 startZ = 0
             elif("Meta" in data):
                 list_of_zones[csvindex].set_meta(data)
+            elif("Policy" in data):
+                list_of_zones[csvindex].set_policy(data)
             elif(data == "****"):
                 #end of zone section
                 startZ = 1
@@ -55,6 +57,7 @@ if __name__ == "__main__":
             print("Match in zone")
             print(z.get_name())
             print(z.get_meta())
+            print(z.get_policy())
             print("**********")
     
     print("--------end of program-------")

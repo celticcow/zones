@@ -6,13 +6,15 @@ use this to build a list of zones which contain networks
 todo:
 input file complete
 search program
-add try / except for if a group does not exist
+add policy meta data
 
 completed
 meta info for zone
 zone build out
 basic search test
 argparse for extract
+add try / except for if a group does not exist
+
 
 unknown:
 zone search for IPv6 host

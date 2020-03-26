@@ -1,5 +1,5 @@
-FDX_Nets,internal networks
-con_boxes,fw team con boxes
-fxs-LAC-corpnet
-groupv6,ipv6 testing group
-doesnotexist,test to see 
+FDX_Nets,internal networks,services-zmd
+con_boxes,fw team con boxes,global
+fxs-LAC-corpnet,services-dmz
+groupv6,ipv6 testing group,devtestlabs
+doesnotexist,test to see

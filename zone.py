@@ -12,6 +12,7 @@ class Zone(object):
     def __init__(self, name="default"):
         self.name = name
         self.meta = "n/a"
+        self.policy = "n/a"
         self.network = list()
     
     #accessor
@@ -20,6 +21,9 @@ class Zone(object):
     
     def get_meta(self):
         return(self.meta)
+    
+    def get_policy(self):
+        return(self.policy)
 
     #modifiers
     def set_name(self,name):
@@ -27,6 +31,9 @@ class Zone(object):
     
     def set_meta(self,meta):
         self.meta = meta
+
+    def set_policy(self,policy):
+        self.policy = policy
 
     def add_network(self, net1):
         self.network.append(net1)
@@ -45,6 +52,7 @@ class Zone(object):
     def printZone(self):
         print (self.name)
         print (self.meta)
+        print (self.policy)
         
         for x in self.network:
             x.print_Network()

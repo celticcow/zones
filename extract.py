@@ -153,9 +153,15 @@ if __name__ == "__main__":
             except:
                 #no one put meta data in ... need this to avoid error condition
                 meta = "n/a"
+            try:
+                policy = row[2]
+            except:
+                #no data to pull
+                policy = "n/a"
             #print("*********")
             print(grp)
             print("Meta:" + meta)
+            print("Policy:" + policy)
             get_group_contents(grp,ip_addr,sid)
             print("****")
   
