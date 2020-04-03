@@ -13,7 +13,7 @@ build zone list and search it
 * this should serve more as a poc code for later building web front end and cgi this
 """
 
-if __name__ == "__main__":
+def main():
     
     debug = 1
 
@@ -61,6 +61,10 @@ if __name__ == "__main__":
             print("**********")
     
     print("--------end of program-------")
+#end of main()
+
+if __name__ == "__main__":
+    main()
 
 
 

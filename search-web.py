@@ -12,7 +12,7 @@ Greg Dunlap / celtic_cow
 cgi search function
 """
 
-if __name__ == "__main__":
+def main():
     
     debug = 1
  
@@ -77,3 +77,7 @@ if __name__ == "__main__":
     print("<br><br>")
     print("</body>")
     print("</html>")
+#end of main()
+
+if __name__ == "__main__":
+    main()

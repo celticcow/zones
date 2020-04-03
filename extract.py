@@ -120,7 +120,7 @@ def get_group_contents(grp,ip_addr,sid):
 
 # end of get_group_contents
 
-if __name__ == "__main__":
+def main():
     
     debug = 0
 
@@ -173,3 +173,6 @@ if __name__ == "__main__":
     if(debug == 1):
         print(logout_result)
 #endof main()
+
+if __name__ == "__main__":
+    main()
