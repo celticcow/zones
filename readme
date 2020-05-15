@@ -18,3 +18,10 @@ add try / except for if a group does not exist
 
 unknown:
 zone search for IPv6 host
+
+
+----
+
+new thread 
+
+use run script to gw to get route table.  comes back as a base64 ... decode script in works
