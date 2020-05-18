@@ -44,10 +44,10 @@ def get_routes(fwname, ip_addr, sid):
 
     #better measure if done or not.   will be int from 0 - 100
     percent = task_info['tasks'][0]['progress-percentage']
-    print(percent)
+    #print(percent)
     
     while(percent != 100):
-        print("--In progress--")
+        #print("--In progress--")
 
         time.sleep(1)
         
@@ -55,11 +55,11 @@ def get_routes(fwname, ip_addr, sid):
         status = task_info['tasks'][0]['status']
         percent = task_info['tasks'][0]['progress-percentage']
 
-        print(status)
+        #print(status)
         if(debug == 1):
             print(json.dumps(task_info))
-        print(percent)
-        print("/////////////////////////////////////")
+        #print(percent)
+        #print("/////////////////////////////////////")
     #end of while loop
 
     if(debug == 1):
@@ -118,14 +118,46 @@ def main():
     if(debug == 1):
         print("session id : " + sid)
 
-    a_base64_message = get_routes("hublab1", ip_addr, sid)
+    with open('r_adm8grp.csv') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',', quotechar='|')
+        for row in reader:
+            grp  = row[0]
+            try:
+                meta = row[1]
+            except:
+                #no one put meta data in ... need this to avoid error condition
+                meta = "n/a"
+            try:
+                policy = row[2]
+            except:
+                #no data to pull
+                policy = "n/a"
+            try:
+                search_str = row[3]
+            except:
+                search_str = "0.0.0.0"
+            #print("*********")
+            print(grp)
+            print("Meta:" + meta)
+            print("Policy:" + policy)
+            a_base64_message = get_routes(grp, ip_addr, sid)
+            networks = convert64(a_base64_message, search_str)
+            for i in range(len(networks)):
+                print(networks[i])
+            ######get_group_contents(grp,ip_addr,sid)
+            print("****")
 
-    networks = convert64(a_base64_message, "161.135.150.129")
 
-    print(len(networks))
 
-    for i in range(len(networks)):
-        print(str(i) + " " + networks[i])
+
+    #a_base64_message = get_routes("hublab1", ip_addr, sid)
+
+    #networks = convert64(a_base64_message, "161.135.150.129")
+
+    #print(len(networks))
+
+    #for i in range(len(networks)):
+    #    print(str(i) + " " + networks[i])
 
     # don't need to publish
     time.sleep(20)

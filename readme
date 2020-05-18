@@ -25,3 +25,5 @@ zone search for IPv6 host
 new thread 
 
 use run script to gw to get route table.  comes back as a base64 ... decode script in works
+decode script works
+moved to main route exact. works on dev.  prod testing going SLOW
