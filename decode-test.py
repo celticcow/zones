@@ -22,3 +22,13 @@ a_message_bytes = base64.b64decode(a_base64_bytes)
 a_message = a_message_bytes.decode('ascii')
 
 print(a_message)
+
+print(len(a_message))
+
+routes = a_message.split('\n')
+
+for route in routes:
+    print(route)
+    print("----")
+
+print("end of program")

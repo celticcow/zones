@@ -5,6 +5,7 @@ import json
 import sys
 import csv
 import time
+import base64
 import argparse
 import ipaddress
 import apifunctions
@@ -19,7 +20,7 @@ gregory.dunlap / celtic_cow
 """
 
 def main():
-    debug = 1
+    debug = 0
 
     ip_addr  = "146.18.96.16"
     ip_cma   = "146.18.96.25"
@@ -77,13 +78,25 @@ def main():
 
     print("-----------------------------------------\n\n")
     print(task_info['tasks'][0]['task-details'][0]['responseMessage'])
+    a_base64_message = task_info['tasks'][0]['task-details'][0]['responseMessage']
     print("\n\n\n")
     #for x in range(task_len):
     #    if(task_info['tasks'][0]['task-details'][x]['cluster'] == True):
     #        print("*^*^*^*^*^")
     #        print(task_info['tasks'][0]['task-details'][x]['stagesInfo'])
 
-    print(json.dumps(task_info))
+    a_base64_bytes = a_base64_message.encode('ascii')
+    a_message_bytes = base64.b64decode(a_base64_bytes)
+    a_message = a_message_bytes.decode('ascii')
+
+    routes = a_message.split('\n')
+
+    for route in routes:
+        print(route)
+        print("----")
+
+    if(debug == 1):
+        print(json.dumps(task_info))
 
     # don't need to publish
     time.sleep(20)
