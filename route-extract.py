@@ -6,7 +6,7 @@ import sys
 import csv
 import time
 import base64
-import argparse
+import getpass
 import ipaddress
 import apifunctions
 
@@ -17,13 +17,17 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 """
 gregory.dunlap / celtic_cow
 
+zone extract info based on route matches via api
+
+input csv format
+fw_name_in_cma,Meta_Data Description, Meta_Data Policy Name,search_subnet
 """
 
 """
 takes fwname and returns route base64 blob
 """
 def get_routes(fwname, ip_addr, sid):
-    debug = 1
+    debug = 0
 
     get_route_json = {
         "script-name" : "script to get route table from fw",
@@ -44,10 +48,10 @@ def get_routes(fwname, ip_addr, sid):
 
     #better measure if done or not.   will be int from 0 - 100
     percent = task_info['tasks'][0]['progress-percentage']
-    #print(percent)
     
     while(percent != 100):
-        #print("--In progress--")
+        if(debug == 1):
+            print("--In progress--")
 
         time.sleep(1)
         
@@ -58,8 +62,8 @@ def get_routes(fwname, ip_addr, sid):
         #print(status)
         if(debug == 1):
             print(json.dumps(task_info))
-        #print(percent)
-        #print("/////////////////////////////////////")
+            print(percent)
+            print("/////////////////////////////////////")
     #end of while loop
 
     if(debug == 1):
@@ -74,8 +78,11 @@ def get_routes(fwname, ip_addr, sid):
 
 ## end of get_routes()
 
+"""
+convert the base64 blob to routes and get the subnet that matches
+"""
 def convert64(b64, search_str):
-    debug = 1
+    debug = 0
 
     nets = list()
 
@@ -99,17 +106,22 @@ def convert64(b64, search_str):
             nets.append(parts[2])
 
     return(nets)
-
-    
 #end of convert64()
 
+"""
+main function
+note : the run-script has to have RW priv 
+can't do it with only ROapi user
+"""
 def main():
-    debug = 1
+    debug = 0
 
-    ip_addr  = "146.18.96.16"
-    ip_cma   = "146.18.96.25"
-    user     = "gdunlap"
-    password = "1qazxsw2"
+    inputfile = sys.argv[1]
+
+    ip_addr = input("enter IP of MDS : ")
+    ip_cma  = input("enter IP of CMA : ")
+    user    = input("enter P1 user id : ")
+    password = getpass.getpass('Enter P1 Password : ')
 
     networks = list()
 
@@ -118,7 +130,7 @@ def main():
     if(debug == 1):
         print("session id : " + sid)
 
-    with open('r_adm8grp.csv') as csvfile:
+    with open(inputfile) as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='|')
         for row in reader:
             grp  = row[0]
@@ -144,20 +156,7 @@ def main():
             networks = convert64(a_base64_message, search_str)
             for i in range(len(networks)):
                 print(networks[i])
-            ######get_group_contents(grp,ip_addr,sid)
             print("****")
-
-
-
-
-    #a_base64_message = get_routes("hublab1", ip_addr, sid)
-
-    #networks = convert64(a_base64_message, "161.135.150.129")
-
-    #print(len(networks))
-
-    #for i in range(len(networks)):
-    #    print(str(i) + " " + networks[i])
 
     # don't need to publish
     time.sleep(20)
@@ -170,3 +169,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+### end of program
