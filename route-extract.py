@@ -149,14 +149,20 @@ def main():
             except:
                 search_str = "0.0.0.0"
             #print("*********")
-            print(grp)
-            print("Meta:" + meta)
-            print("Policy:" + policy)
-            a_base64_message = get_routes(grp, ip_addr, sid)
-            networks = convert64(a_base64_message, search_str)
-            for i in range(len(networks)):
-                print(networks[i])
-            print("****")
+            with open('routezone.csv', 'a') as writer:
+                writer.write(grp + "\n")
+                writer.write("Meta:" + meta + "\n")
+                writer.write("Policy:" + policy + "\n")
+                print(grp)
+                print("Meta:" + meta)
+                print("Policy:" + policy)
+                a_base64_message = get_routes(grp, ip_addr, sid)
+                networks = convert64(a_base64_message, search_str)
+                for i in range(len(networks)):
+                    print(networks[i])
+                    writer.write(networks[i] + "\n")
+                print("****")
+                writer.write("****" + "\n")
 
     # don't need to publish
     time.sleep(20)
